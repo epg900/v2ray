@@ -20,7 +20,7 @@ clear_output()
 clear_output()
 !dpkg -i cloudflared-linux-amd64.deb
 clear_output()
-!unzip v2ray-linux-64.zip
+!unzip   v2ray-linux-64.zip
 clear_output()
 
 os.remove("config.json")
@@ -29,7 +29,7 @@ idx=str(uuid.uuid4())
 
 config='{"log":{"access":"","error":"","loglevel":"warning"},"inbound":{"protocol":"vmess","port":%s,"settings":{"clients":[{"id":"%s","alterId":64}]},"streamSettings":{"network":"ws","security":"none"}},"inboundDetour":[],"outbound":{"protocol":"freedom","settings":{}}}' % (str(9910),idx)
 with open("config.json", "w") as f:
-  f.write(config)
+    f.write(config)
 
 clear_output()
 
@@ -59,16 +59,20 @@ url.svg('qrcode.svg', scale=8)
 imgfile=base64.b64encode(open("qrcode.svg","rb").read()).decode('ascii')
 
 display(HTML("<center><img width='270px' height='270px'  src='data:image/svg+xml;base64,{}' /></center>".format(imgfile)))
-html_text = '''<center><input type="hidden" value="{}" id="clipborad-text">
-                <button onclick="copyToClipboard()">Copy Config</button>
+html_text =  '''<center>
+                <input type="text" value="{}" id="clipborad-text">
                 <script>
                 function copyToClipboard() {{
-                    var copyText = document.getElementById("clipborad-text");
-                    copyText.select();
-                    navigator.clipboard.writeText(copyText.value);
-                    alert("Copied the text: " + copyText.value);
+                var copyText = document.getElementById("clipborad-text");
+                copyText.select();
+                document.execCommand("copy");
+                copyText.setSelectionRange(0, 99999);
+                navigator.clipboard.writeText(copyText.value).then(function () {{alert("1");}} );
+                alert("Copied the text: " + copyText.value);
                 }}
-                </script></center>'''.format(config)
+                </script>
+                <button onclick="copyToClipboard();">Copy Config</button>
+                </center>'''.format(config,config)
 display(HTML(html_text))
 #time.sleep(7200)
 while True: pass
