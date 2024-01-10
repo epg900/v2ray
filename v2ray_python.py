@@ -1,10 +1,11 @@
 # @title V2Ray Server
-import json, base64, uuid, os, re, time
+import json, base64, uuid, os, re, time, webbrowser
 from IPython.display import HTML, clear_output
 from threading import Timer
 from subprocess import Popen , PIPE
 
 Popen("pip install pyqrcode".split())
+time.sleep(4)
 import pyqrcode
 
 if os.path.isdir('server'):
@@ -50,3 +51,4 @@ config="vmess://"+base64.b64encode(json.dumps(d).encode()).decode("utf-8")
 url = pyqrcode.create(config)
 url.svg('qrcode.svg', scale=8)
 print(url.terminal(quiet_zone=1))
+webbrowser.open('qrcode.svg')
