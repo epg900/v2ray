@@ -1,11 +1,11 @@
-import json, base64, uuid, os, re, time, sys, webbrowser
-from IPython.display import HTML, clear_output
+import json, base64, uuid, os, re, time, sys
 from threading import Timer
 from subprocess import Popen , PIPE
 
 import socket
 import fcntl
 import struct
+import pyqrcode
 
 def get_ip_address(ifname):
     s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
@@ -16,10 +16,6 @@ def get_ip_address(ifname):
     )[20:24])
 
 serverip = get_ip_address(b'eth0')
-
-Popen("pip install pyqrcode".split())
-time.sleep(4)
-import pyqrcode
 
 Popen("wget https://github.com/v2fly/v2ray-core/releases/download/v4.45.2/v2ray-linux-64.zip".split())
 time.sleep(2)
@@ -38,7 +34,7 @@ Popen("pkill cloudflared".split())
 
 Popen("./v2ray run".split(), cwd='./', env={'V2RAY_VMESS_AEAD_FORCED':'false'})
 
-d=json.loads('{"add":"{0}","aid":"64","host":"","id":"{1}","net":"ws","path":"","port":"80","ps":"1","tls":"","type":"none","v":"2"}')
+d=json.loads('{"add":"{0}","aid":"64","host":"","id":"{1}","net":"ws","path":"","port":"9910","ps":"1","tls":"","type":"none","v":"2"}')
 d["add"] = serverip
 d["id"] = idx
 
