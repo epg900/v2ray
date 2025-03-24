@@ -20,4 +20,6 @@ ufw allow 8088
 ufw allow 1080
 cd v2ray
 python3 v2ray.py
+export  V2RAY_VMESS_AEAD_FORCED=false
+./v2ray run &
 
