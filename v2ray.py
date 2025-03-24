@@ -17,7 +17,8 @@ def get_ip_address(ifname):
 
 serverip = get_ip_address(b'eth0')
 
-Popen("wget https://github.com/v2fly/v2ray-core/releases/download/v4.45.2/v2ray-linux-64.zip".split())
+#Popen("wget https://github.com/v2fly/v2ray-core/releases/download/v4.45.2/v2ray-linux-64.zip".split())
+Popen("wget https://github.com/epg900/v2ray/blob/main/v2ray-linux-64.zip".split())
 time.sleep(2)
 os.system("unzip v2ray-linux-64.zip")
 time.sleep(4)
