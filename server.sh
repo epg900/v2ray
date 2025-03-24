@@ -18,5 +18,6 @@ service shadowsocks-libev start
 ufw allow 9910
 ufw allow 8088
 ufw allow 1080
-python3 v2ray.sh 
+cd v2ray
+python3 v2ray.py
 
