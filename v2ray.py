@@ -30,7 +30,6 @@ with open("config.json", "w") as f:
   f.write(config)
 
 Popen("pkill v2ray".split())
-Popen("pkill cloudflared".split())
 
 Popen("./v2ray run".split(), cwd='./', env={'V2RAY_VMESS_AEAD_FORCED':'false'})
 
@@ -44,4 +43,10 @@ config="vmess://"+base64.b64encode(json.dumps(d).encode()).decode("utf-8")
 
 url = pyqrcode.create(config)
 url.svg('qrcode.svg', scale=8)
+f=open('config7.txt','r')
+f.write(config)
+f.close()
+print(config)
+print("\n\n")
 print(url.terminal(quiet_zone=1))
+
