@@ -11,6 +11,8 @@ service sshd restart
 cd ~
 cp v2ray/ssconfig.json /etc/shadowsocks-libev/config.json
 git clone https://github.com/epg900/epfs2.git
+cd epfs2
+python3 server.py &
 cd ~
 python3 -m http.server &
 service shadowsocks-libev stop
