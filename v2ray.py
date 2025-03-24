@@ -31,7 +31,7 @@ with open("config.json", "w") as f:
 
 Popen("pkill v2ray".split())
 
-Popen("./v2ray run".split(), cwd='./', env={'V2RAY_VMESS_AEAD_FORCED':'false'})
+#Popen("./v2ray run".split(), cwd='./', env={'V2RAY_VMESS_AEAD_FORCED':'false'})
 
 d=json.loads('{"add":"{0}","aid":"64","host":"","id":"{1}","net":"ws","path":"","port":"9910","ps":"1","tls":"","type":"none","v":"2"}')
 d["add"] = serverip
