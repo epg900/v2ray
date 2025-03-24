@@ -43,9 +43,8 @@ config="vmess://"+base64.b64encode(json.dumps(d).encode()).decode("utf-8")
 
 url = pyqrcode.create(config)
 url.svg('qrcode.svg', scale=8)
-f=open('config7.txt','r')
-f.write(config)
-f.close()
+with open("config7.json", "w") as f:
+  f.write(config)
 print(config)
 print("\n\n")
 print(url.terminal(quiet_zone=1))
