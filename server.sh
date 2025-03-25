@@ -29,4 +29,5 @@ cd /root/epfs2
 python3 server.py &
 useradd ep -s /bin/false
 passwd ep
+passwd root
 
