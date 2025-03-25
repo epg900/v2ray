@@ -11,10 +11,7 @@ service sshd restart
 cd ~
 cp v2ray/ssconfig.json /etc/shadowsocks-libev/config.json
 git clone https://github.com/epg900/epfs2.git
-cd epfs2
-python3 server.py &
 cd ~
-python3 -m http.server &
 service shadowsocks-libev stop
 service shadowsocks-libev start
 ufw allow 9910
@@ -24,6 +21,9 @@ cd v2ray
 python3 v2ray.py
 export  V2RAY_VMESS_AEAD_FORCED=false
 ./v2ray run &
+python3 -m http.server &
+cd epfs2
+python3 server.py &
 useradd ep -s /bin/true
 passwd ep
 
