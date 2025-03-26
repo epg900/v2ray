@@ -2,7 +2,6 @@ cd /root
 apt update
 apt install shadowsocks-libev -y
 apt install unzip -y
-apt install python3-pyqrcode -y
 apt install python3-flask -y
 cd /etc/ssh
 sed -i 's/#Port 22/Port 7077/' sshd_config
