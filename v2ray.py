@@ -5,7 +5,7 @@ from subprocess import Popen , PIPE
 import socket
 import fcntl
 import struct
-import pyqrcode
+#import pyqrcode
 
 def get_ip_address(ifname):
     s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
@@ -42,8 +42,8 @@ print(json.dumps(d))
 
 config="vmess://"+base64.b64encode(json.dumps(d).encode()).decode("utf-8")
 ssconf="ss://Y2hhY2hhMjAtaWV0Zi1wb2x5MTMwNTplMTI0@"+str(serverip)+":8088#ep"
-url = pyqrcode.create(config)
-url.svg('qrcode.svg', scale=8)
+#url = pyqrcode.create(config)
+#url.svg('qrcode.svg', scale=8)
 with open("config7.txt", "w") as f:
   f.write(config)
   f.write("\n")
@@ -51,6 +51,6 @@ with open("config7.txt", "w") as f:
 
 print(config)
 print(ssconf)
-print("\n\n")
-print(url.terminal(quiet_zone=1))
+#print("\n\n")
+#print(url.terminal(quiet_zone=1))
 
