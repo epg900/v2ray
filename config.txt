@@ -1,0 +1,30 @@
+{
+  "inbounds": [
+    {
+      "port": 5055,
+      "protocol": "shadowsocks",
+      "settings": {
+        "method": "aes-128-gcm",
+        "password": "e123"
+      }
+    },
+    {
+      "port": 9910,
+      "protocol": "vmess",
+      "settings": {
+        "clients": [
+          {
+            "id": "uuid",
+            "alterId": 64
+          }
+        ]
+      },"streamSettings":{"network":"ws","security":"none"}
+    }
+  ],
+  "outbounds": [
+    {
+      "protocol": "freedom",
+      "settings": {}
+    }
+  ]
+}

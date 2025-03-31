@@ -1,0 +1,1 @@
+{"add":"addr1","aid":"64","host":"","id":"uuid","net":"ws","path":"","port":"9910","ps":"1","tls":"","type":"none","v":"2"}
