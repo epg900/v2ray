@@ -1,6 +1,6 @@
 cd /root
 apt update
-#apt install shadowsocks-libev -y
+apt install shadowsocks-libev -y
 apt install unzip -y
 apt install python3-flask -y
 cd /etc/ssh
@@ -9,12 +9,12 @@ sed -i 's/#PermitTunnel no/PermitTunnel yes/' sshd_config
 sed -i 's/#AllowTcpForwarding yes/AllowTcpForwarding yes/' sshd_config
 service sshd restart
 cd /root
-#cp v2ray/ssconfig.json /etc/shadowsocks-libev/config.json
+cp v2ray/ssconfig.json /etc/shadowsocks-libev/config.json
 git clone https://github.com/epg900/epfs2.git
 cd /root
 #cat /proc/sys/kernel/random/uuid
-#service shadowsocks-libev stop
-#service shadowsocks-libev start
+service shadowsocks-libev stop
+service shadowsocks-libev start
 ufw allow 9910
 ufw allow 8088
 ufw allow 1080
