@@ -21,8 +21,13 @@ cp config.txt config.json
 ipaddr=$(hostname -I | cut -d' ' -f1)
 sed -i "s/uuid/$uuidcode/" config2.txt
 sed -i "s/addr1/$ipaddr/" config2.txt
-curl -F file=@"config2.txt" https://epfs2.eu.pythonanywhere.com/uploader
-cp /root/v2ray/config2.txt /root/config2.txt
+confb64=$(cat config2.txt | base64 -w 0)
+conf="vmess://${confb64}"
+echo $conf > config8.txt
+ssconf="ss://Y2hhY2hhMjAtaWV0Zi1wb2x5MTMwNTplMTI0@${ipaddr}:5055#ep"
+echo $ssconf >> config8.txt
+curl -F file=@"config8.txt" https://epfs2.eu.pythonanywhere.com/uploader
+cp /root/v2ray/config8.txt /root/config8.txt
 cd /root/epfs2
 python3 server.py &
 useradd ep -s /bin/false
