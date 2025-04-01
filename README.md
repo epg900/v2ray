@@ -4,5 +4,7 @@
 Thank from v2ray and cloudflare!
 
 This code may not work on colab!!!
-but
-Run `server.sh` or `e.sh` on your ubuntu VPS and get client config from ip:5000/config[7 or 8].txt.
+
+Vps shell script
+================
+Run `server.sh` or `e.sh` on your ubuntu VPS and get client config from [your vps server ip]:5000/config[7 or 8].txt.
