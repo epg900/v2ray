@@ -7,4 +7,5 @@ This code may not work on colab!!!
 
 Vps shell script
 ================
+Clone this repository on your VPS then
 Run `server.sh` or `e.sh` on your ubuntu VPS and get client config from [your vps server ip]:5000/config[7 or 8].txt.
