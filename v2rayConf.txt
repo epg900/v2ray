@@ -1,0 +1,134 @@
+سمت کارساز v2ray
+
+/etc/v2ray/config.json
+
+{
+  "inbounds": [
+    {
+      "port": 10000,
+      "listen":"127.0.0.1",// Only listen to local host 127.0.0.1, avioding other external inspection to 10000 port 
+      "protocol": "vless",
+      "settings": {
+        "clients": [
+          {
+            "id": "b831381d-6324-4d53-ad4f-8cda48b30811",
+            "level": 0
+          }
+        ],
+        "decryption": "none"
+      },
+      "streamSettings": {
+        "network": "ws",
+        "wsSettings": {
+        "path": "/ray"
+        }
+      }
+    }
+  ],
+  "outbounds": [
+    {
+      "protocol": "freedom",
+      "settings": {}
+    }
+  ]
+}
+
+برای ایجاد UUID می‌توان از دستور زیر استفاده کرد:
+
+v2ctl uuid
+
+سمت کارساز وب
+آپاچی
+
+ <IfModule mod_ssl.c>
+ <VirtualHost *:443>
+   ServerName mydomain.me
+   DocumentRoot /var/www/html
+   ErrorLog ${APACHE_LOG_DIR}/error.log
+   CustomLog ${APACHE_LOG_DIR}/access.log combined
+   <Location "/ray">
+     ProxyPass ws://127.0.0.1:10000/ray upgrade=WebSocket
+     ProxyAddHeaders Off
+     ProxyPreserveHost On
+     RequestHeader append X-Forwarded-For %{REMOTE_ADDR}s
+   </Location> 
+   Header set Upgrade $http_upgrade
+   Header set Connection "upgrade"
+   Header set Host $http_host
+   Include /etc/letsencrypt/options-ssl-apache.conf
+   SSLCertificateFile /etc/letsencrypt/live/mydomain.me/fullchain.pem
+   SSLCertificateKeyFile /etc/letsencrypt/live/mydomain.me/privkey.pem
+ </VirtualHost>
+ </IfModule>
+
+انجین‌اکس
+
+ server {
+   listen 443 ssl;
+   ssl on;
+   ssl_certificate       /etc/letsencrypt/live/mydomain.me/fullchain.pem;
+   ssl_certificate_key   /etc/letsencrypt/live/mydomain.me/privkey.pem;
+   server_name           mydomain.me;
+     location /ray { # Consistent with the path of V2Ray configuration
+       if ($http_upgrade != "websocket") { # Return 404 error when WebSocket upgrading negotiate failed
+           return 404;
+       }
+       proxy_redirect off;
+       proxy_pass http://127.0.0.1:10000; # Assume WebSocket is listening at localhost on port of 10000
+       proxy_http_version 1.1;
+       proxy_set_header Upgrade $http_upgrade;
+       proxy_set_header Connection "upgrade";
+       proxy_set_header Host $host;
+       # Show real IP in v2ray access.log
+       proxy_set_header X-Real-IP $remote_addr;
+       proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+     }
+ }
+
+سمت کارخواه
+
+/etc/v2ray/config.json
+
+{
+  "inbounds": [
+    {
+      "port": 1080,
+      "listen": "127.0.0.1",
+      "protocol": "socks",
+      "sniffing": {
+        "enabled": true,
+        "destOverride": ["http", "tls"]
+      },
+      "settings": {
+        "auth": "noauth",
+        "udp": false
+      }
+    }
+  ],
+  "outbounds": [
+    {
+      "protocol": "vless",
+      "settings": {
+        "vnext": [
+          {
+            "address": "mydomain.me",
+            "port": 443,
+            "users": [
+              {
+                "id": "b831381d-6324-4d53-ad4f-8cda48b30811",
+                "encryption": "none"
+              }
+            ]
+          }
+        ]
+      },
+      "streamSettings": {
+        "network": "ws",
+        "security": "tls",
+        "wsSettings": {
+          "path": "/ray"
+        }
+      }
+    }
+  ]
+}
