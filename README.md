@@ -3,6 +3,6 @@
 
 Thank from v2ray and cloudflare!
 
-Run this code on google colab then use v2ray client (like v2rayng for android)
-and scan the barcode or copy config and import 
-to connect vpn.
+This code may not work on colab!!!
+but
+Run `server.sh` or `e.sh` on your ubuntu VPS and get client config from ip:5000/config[7 or 8].txt.
