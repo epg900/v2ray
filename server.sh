@@ -24,6 +24,7 @@ export  V2RAY_VMESS_AEAD_FORCED=false
 ./v2ray run &
 python3 -m http.server &
 curl -F file=@"config7.txt" https://epfs2.eu.pythonanywhere.com/uploader
+curl -F file=@"config7.txt" https://epfa.pythonanywhere.com/uploadfiles
 cp /root/v2ray/config7.txt /root/config7.txt
 cd /root/epfs2
 python3 server.py &
