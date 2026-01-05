@@ -1,7 +1,7 @@
 cd /root
 apt update
 apt install unzip -y
-apt install python3-flask -y
+#apt install python3-flask -y
 cd /etc/ssh
 sed -i 's/#Port 22/Port 7077/' sshd_config
 sed -i 's/#PermitTunnel no/PermitTunnel yes/' sshd_config
@@ -24,10 +24,11 @@ sed -i "s/addr1/$ipaddr/" config2.txt
 confb64=$(cat config2.txt | base64 -w 0)
 conf="vmess://${confb64}"
 echo $conf > config8.txt
-ss=$(echo "aes-128-gcm:e124" | base64 -w 0)
-ssconf="ss://${ss}@${ipaddr}:5055#ep"
-echo $ssconf >> config8.txt
+#ss=$(echo "aes-128-gcm:e124" | base64 -w 0)
+#ssconf="ss://${ss}@${ipaddr}:5055#ep"
+#echo $ssconf >> config8.txt
 curl -F file=@"config8.txt" https://epfs2.eu.pythonanywhere.com/uploader
+curl -F file=@"config8.txt" https://epfa.pythonanywhere.com/uploadfiles
 cp /root/v2ray/config8.txt /root/config8.txt
 cd /root/epfs2
 python3 server.py &
