@@ -1,6 +1,6 @@
 cd /root
 apt update
-apt install unzip -y
+#apt install unzip -y
 #apt install python3-flask -y
 cd /etc/ssh
 sed -i 's/#Port 22/Port 7077/' sshd_config
@@ -12,7 +12,7 @@ git clone https://github.com/epg900/epfs2.git
 cd /root
 uuidcode=$(cat /proc/sys/kernel/random/uuid)
 cd v2ray
-unzip v2ray-linux-64.zip
+#unzip v2ray-linux-64.zip
 export  V2RAY_VMESS_AEAD_FORCED=false
 sed -i "s/uuid/$uuidcode/" config.txt
 rm config.json
