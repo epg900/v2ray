@@ -31,7 +31,7 @@ curl -F file=@"config8.txt" https://epfs2.eu.pythonanywhere.com/uploader
 curl -F file=@"config8.txt" https://epfa.pythonanywhere.com/uploadfiles
 cp /root/v2ray/config8.txt /root/config8.txt
 cd /root/epfs2
-python3 server.py &
+#python3 server.py &
 useradd ep -s /bin/false
 passwd ep
 passwd root
