@@ -5,13 +5,14 @@
 SERVER_IP=$(hostname -I | awk '{print $1}')
 
 # تولید PSK تصادفی (32 کاراکتر)
-PSK_SECRET=$(openssl rand -base64 32)
+PSK_SECRET="e123456789E"
+#$(openssl rand -base64 32)
 
 # اینترفیس اینترنتی پیش‌فرض
 NET_IFACE="eth0"
 
 echo "[+] Installing strongSwan and qrencode..."
-apt update && apt install -y strongswan iptables-persistent qrencode
+apt update && apt install -y strongswan iptables-persistent 
 
 echo "[+] Configuring ipsec.conf..."
 cat > /etc/ipsec.conf <<EOF
@@ -42,12 +43,12 @@ sed -i '/^net.ipv4.ip_forward/d' /etc/sysctl.conf
 echo "net.ipv4.ip_forward=1" >> /etc/sysctl.conf
 
 echo "[+] Setting up iptables NAT..."
-iptables -t nat -A POSTROUTING -s 0.0.0.0/0 -o ${NET_IFACE} -j MASQUERADE
+iptables -t nat -A POSTROUTING -s 0.0.0.0/0 -o ${NET_IFACE} -j SNAT --to-source ${SERVER_IP} 
 netfilter-persistent save
 
 echo "[+] Restarting strongSwan..."
-systemctl restart strongswan
-systemctl enable strongswan
+#systemctl restart strongswan
+#systemctl enable strongswan
 
 echo "[✓] IKEv2/IPsec PSK VPN setup completed!"
 echo "Server IP: ${SERVER_IP}"
@@ -56,4 +57,5 @@ echo "Interface: ${NET_IFACE}"
 echo "Generated PSK: ${PSK_SECRET}"
 
 echo "[+] Showing PSK as QRCode:"
-echo "${PSK_SECRET}" | qrencode -t ANSIUTF8
+#echo "${PSK_SECRET}" | qrencode -t ANSIUTF8
+
