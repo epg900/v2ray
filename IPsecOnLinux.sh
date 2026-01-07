@@ -1,27 +1,25 @@
 #!/bin/bash
 # IKEv2/IPsec PSK setup script with auto-generated PSK + QRCode
 
-# خواندن آی‌پی سرور به صورت خودکار
 SERVER_IP=$(hostname -I | awk '{print $1}')
 
-# تولید PSK تصادفی (32 کاراکتر)
-PSK_SECRET="e123456789E"
+PSK_SECRET="eE!12345"
 #$(openssl rand -base64 32)
 
-# اینترفیس اینترنتی پیش‌فرض
-NET_IFACE="eth0"
+read -p "Enter eth0 : " eth
+read -p "Enter Client IP range : " iprange
+NET_IFACE=$eth
 
-echo "[+] Installing strongSwan and qrencode..."
 apt update && apt install -y strongswan iptables-persistent 
 
-echo "[+] Configuring ipsec.conf..."
 cat > /etc/ipsec.conf <<EOF
 config setup
   charondebug="ike 2, knl 2, cfg 2"
 
 conn android
   keyexchange=ikev2
-  auto=add
+  ike=aes128-sha1-modp1024
+  esp=aes128-sha1
   left=${SERVER_IP}
   leftid=${SERVER_IP}
   leftauth=psk
@@ -29,33 +27,25 @@ conn android
   right=%any
   rightid=%any
   rightauth=psk
-  rightsourceip=0.0.0.0/0
+  rightsourceip=$iprange
 EOF
 
-echo "[+] Configuring ipsec.secrets..."
 cat > /etc/ipsec.secrets <<EOF
 ${SERVER_IP} %any : PSK "${PSK_SECRET}"
 EOF
 
-echo "[+] Enabling IP forwarding..."
 sysctl -w net.ipv4.ip_forward=1
 sed -i '/^net.ipv4.ip_forward/d' /etc/sysctl.conf
 echo "net.ipv4.ip_forward=1" >> /etc/sysctl.conf
+sysctl -p
 
-echo "[+] Setting up iptables NAT..."
-iptables -t nat -A POSTROUTING -s 0.0.0.0/0 -o ${NET_IFACE} -j SNAT --to-source ${SERVER_IP} 
+iptables -t nat -A POSTROUTING -s $iprange -o ${NET_IFACE} -j SNAT --to-source ${SERVER_IP} 
 netfilter-persistent save
 
 echo "[+] Restarting strongSwan..."
-#systemctl restart strongswan
-#systemctl enable strongswan
+systemctl restart  strongswan-starter.service
+systemctl enable  strongswan-starter.service
 
-echo "[✓] IKEv2/IPsec PSK VPN setup completed!"
-echo "Server IP: ${SERVER_IP}"
-echo "Client subnet: 0.0.0.0/0 (all clients allowed)"
-echo "Interface: ${NET_IFACE}"
-echo "Generated PSK: ${PSK_SECRET}"
-
-echo "[+] Showing PSK as QRCode:"
 #echo "${PSK_SECRET}" | qrencode -t ANSIUTF8
+
 
