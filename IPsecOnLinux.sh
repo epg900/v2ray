@@ -20,6 +20,7 @@ conn android
   keyexchange=ikev2
   ike=aes128-sha1-modp1024
   esp=aes128-sha1
+  #auto=add
   left=${SERVER_IP}
   leftid=${SERVER_IP}
   leftauth=psk
@@ -47,5 +48,6 @@ systemctl restart  strongswan-starter.service
 systemctl enable  strongswan-starter.service
 
 #echo "${PSK_SECRET}" | qrencode -t ANSIUTF8
+
 
 
